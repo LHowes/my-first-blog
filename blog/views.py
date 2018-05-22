@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Post
 
-# creating a function to take a request and return a function to render the template blog/post_list.html.
+# create query set posts and display based on publication date
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/post_list.html', {'posts': posts})
